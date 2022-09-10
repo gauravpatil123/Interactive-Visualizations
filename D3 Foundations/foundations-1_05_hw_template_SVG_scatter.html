@@ -67,8 +67,8 @@
                .data(dataset)
                .enter()
                .append("text")
-               .text(d=> d) //we want the text to return the data values
-               .attr("x", d=> d[0] - 25) //we want to give the text an x value, use what you used above, mind the difference between circle text properties 
+               .text(d=> "(" + d + ")") //we want the text to return the data values
+               .attr("x", d=> d[0] - 30) //we want to give the text an x value, use what you used above, mind the difference between circle text properties 
                .attr("y", d=> svgHeight - d[1] + 25); //we want to give the text a y value, use what you used above, mind the difference between circle text properties 
 
 
