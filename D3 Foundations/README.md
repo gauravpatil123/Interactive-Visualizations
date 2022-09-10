@@ -12,5 +12,5 @@ The attached visualization is a scatter plot with a test dataset. The data is se
 
 Further is an visualization of a test with shape elements.
 
-1. Here is am inmage of how the image diaplays:
+1. Here is an image of how the canvas diaplays:
 <img src="data/ShapesTest.png" width=500 height=500>
