@@ -2,7 +2,7 @@
 D3 - Foundations
 ================
 
-D3 Foundations Chart
+D3 Foundations Charts
 ---------------------
 
 The attached visualization is a scatter plot with a test dataset. The data is self-sourced, as this is a personal quantitative test to try out the foundations of D3. 
