@@ -31,6 +31,12 @@
                 color: midnightblue;
             }
 
+            /*doesnt work*/
+            #c1.bartext text{ 
+                font-size: 10px;
+                transform: rotate(-30deg);
+            }
+
         </style>
     </head>
     <body>
@@ -109,6 +115,16 @@
                         .attr("font-size", "24px")
                         .attr("font-weight", "bold")
                         .attr("fill", "#99A3A4");
+                
+                svg_gdp.selectAll(".barText")
+                        .data(dataset)
+                        .enter()
+                        .append("text")
+                        .attr("x", d => xScale(d.year))
+                        .attr("y", d => yScale_gdp(d.gdp_in_billion_usd))
+                        .text(d => d.gdp_in_billion_usd)
+                        .attr("font-size", "6px");
+
 
                 // chart 2 scale calibration
                 const maxY_per_capita = d3.max(dataset, d => d.per_capita_in_usd);
@@ -155,6 +171,15 @@
                             .attr("font-size", "24px")
                             .attr("font-weight", "bold")
                             .attr("fill", "#99A3A4");
+
+                svg_per_capita.selectAll(".barText")
+                            .data(dataset)
+                            .enter()
+                            .append("text")
+                            .attr("x", d => xScale(d.year))
+                            .attr("y", d => yScale_per_capita(d.per_capita_in_usd))
+                            .text(d => d.per_capita_in_usd)
+                            .attr("font-size", "6px");
                 
                 // chart 3 scale calibration
                 
@@ -219,6 +244,15 @@
                                 .attr("font-size", "24px")
                                 .attr("font-weight", "bold")
                                 .attr("fill", "#99A3A4");
+
+                svg_percentage_growth.selectAll(".barText")
+                                    .data(dataset)
+                                    .enter()
+                                    .append("text")
+                                    .attr("x", d => xScale(d.year))
+                                    .attr("y", d => d.percentage_growth >= 0 ? yScale_percentage_growth_plus(d.percentage_growth) : yScale_percentage_growth_minus(d.percentage_growth) + 6)
+                                    .text(d => d.percentage_growth)
+                                    .attr("font-size", "6px");
                 
                 // Chart 4 horizontal bar chart
                 const yScale_gdp_horizontal = d3.scaleBand()
@@ -274,6 +308,15 @@
                             .attr("font-size", "24px")
                             .attr("font-weight", "bold")
                             .attr("fill", "#99A3A4");
+
+                svg_gdp_horizontal.selectAll(".barText")
+                                .data(dataset)
+                                .enter()
+                                .append("text")
+                                .attr("x", d => xScale_gdp_horizontal(d.gdp_in_billion_usd) + 3)
+                                .attr("y", d => yScale_gdp_horizontal(d.year) + 6)
+                                .text(d => d.gdp_in_billion_usd)
+                                .attr("font-size", "6px");
                 
                 console.log(dataset);
 
