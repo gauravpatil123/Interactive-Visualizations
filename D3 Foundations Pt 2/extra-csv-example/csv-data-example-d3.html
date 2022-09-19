@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Data Example</title>
+        <script src= "https://d3js.org/d3.v7.min.js"></script>
+    </head>
+    <body>
+        <script>    
+        /*INSTRUCTIONS: run the code in your http-server (nothing will be displayed FYI).
+        Then, uncomment the console.logs below and see what's displayed in the console.
+        I would recommend you also open the actual CSV file to compare/think between the two.*/
+        
+        //Data source: EPA, "Annual Summary Data--AQI by County 2022", https://aqs.epa.gov/aqsweb/airdata/download_files.html 
+
+        //load dataset 
+        d3.csv("annual_aqi_by_county_2021.csv").then(data => {  
+            
+        //format the data so numbers are number format for the items I want to use
+            data.forEach(d => {
+                d.State = d.State;
+                d.County = d.County;
+                d["Unhealthy for Sensitive Groups Days"] = +d["Unhealthy for Sensitive Groups Days"];//our column names have spaces and so we treat them like this
+                d["Unhealthy Days"] = +d["Unhealthy Days"];//also the unary operator is formatting our numbers (try removing it and see the difference in the console)
+            });
+
+        //using columns (a D3 feature with d3.dsv) to identify column names in an array
+            const colNames = data.columns;
+            console.log(colNames);
+
+        //using .filter() to filter out data based on a parameter with comparison operator
+            const unhealthyData = data.filter(d=> d["Unhealthy for Sensitive Groups Days"] >= 20);
+            console.log(unhealthyData);
+
+        //using .filter() to filter out based on two parameters with the OR operator   
+            const nyccaData = data.filter(d => d.State == "New York" || d.State == "California");
+            console.log(nyccaData);
+
+            const nyc_data = nyccaData.filter(d => d.State == "New York");
+            console.log(nyc_data);
+
+            const ca_data = nyccaData.filter(d => d.State == "California");
+            console.log(ca_data);
+
+        });
+
+        /*BONUS: try uploading a different CSV file (be sure to save the file in this folder and reference it!) 
+        Then, tweak the above to start to explore the new file.*/
+        </script>
+    </body>
+</html>

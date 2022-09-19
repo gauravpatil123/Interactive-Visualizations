@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>India GDP Charts</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+            h1 {
+              font-family: "Helvetica", "Arial", sans-serif;
+              font-size: 28px;
+              color: #3498DB;
+            }
+
+            .axis path, 
+            .axis line{
+                stroke: midnightblue;
+            }
+
+            #bot.axis text{
+                font-family: "Helvetica", "Arial", sans-serif; 
+                font-size: 10px;
+                font-weight: normal;
+                transform: rotate(-30deg);
+                color: midnightblue;
+                }
+
+            #left.axis text{
+                font-family: "Helvetica", "Arial", sans-serif; 
+                font-size: 10px;
+                font-weight: normal;
+                color: midnightblue;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>GDP growth of India charts</h1>
+        <svg width="800" height="800" id="svg1"></svg>
+        <svg width="800" height="800" id="svg2"></svg>
+        <svg width="800" height="800" id="svg3"></svg>
+        <svg width="800" height="800" id="svg4"></svg>
+        <script type="text/javascript">
+
+            //Chart global variables
+            const margin = 50;
+            const width = 800;
+            const height = 800;
+
+            //loading data
+            d3.csv("data/GDP Growth of India/India_GDP_Data.csv").then(dataset => {
+                dataset.forEach(d => {
+                    d.year = d.Year;
+                    d.gdp_in_billion_usd = +d.GDP_In_Billion_USD;
+                    d.per_capita_in_usd = +d.Per_Capita_in_USD;
+                    d.percentage_growth = +d.Percentage_Growth;
+                });
+
+                const xScale = d3.scaleBand()
+                                .domain(dataset.slice(0).reverse().map(d => d.year))
+                                .range([margin, width - margin])
+                                .paddingInner(0.2)
+                                .paddingOuter(0.2);
+
+                const bottomAxis = d3.axisBottom().scale(xScale);
+
+                // chart 1 scale calibration
+                const maxY_gdp = d3.max(dataset, d => d.gdp_in_billion_usd);
+
+                const yScale_gdp = d3.scaleLinear()
+                                    .domain([0, maxY_gdp])
+                                    .range([height - margin, margin]);
+                
+                const leftAxis_gdp = d3.axisLeft().scale(yScale_gdp);
+
+                const gdp_color_scale = d3.scaleLinear()
+                                        .domain([0, maxY_gdp])
+                                        .range(["#E8F8F5", "#0E6251"]);
+
+
+                //SVG chart 1
+                const svg_gdp = d3.select("#svg1");
+
+                svg_gdp.selectAll("rect")
+                        .data(dataset)
+                        .enter()
+                        .append("rect")
+                        .attr("x", d => xScale(d.year))
+                        .attr("y", d => yScale_gdp(d.gdp_in_billion_usd))
+                        .attr("width", xScale.bandwidth())
+                        .attr("height", d => (height - margin) - yScale_gdp(d.gdp_in_billion_usd))
+                        .attr("fill", d => gdp_color_scale(d.gdp_in_billion_usd));
+
+                svg_gdp.append("g")
+                        .attr("class", "axis")
+                        .attr("id", "bot")
+                        .attr("transform", "translate(0," + (height - margin) + ")")
+                        .call(bottomAxis);
+                
+                svg_gdp.append("g")
+                        .attr("class", "axis")
+                        .attr("id", "left")
+                        .attr("transform", "translate(" + margin + ",0)")
+                        .call(leftAxis_gdp);
+
+                svg_gdp.append("text")
+                        .attr("x", 150)
+                        .attr("y", 150)
+                        .text("India's GDP in billion USD over years")
+                        .attr("font-size", "24px")
+                        .attr("font-weight", "bold")
+                        .attr("fill", "#99A3A4");
+
+                // chart 2 scale calibration
+                const maxY_per_capita = d3.max(dataset, d => d.per_capita_in_usd);
+
+                const yScale_per_capita = d3.scaleLinear()
+                                            .domain([0, maxY_per_capita])
+                                            .range([height - margin, margin]);
+
+                const leftAxis_per_capita = d3.axisLeft().scale(yScale_per_capita);
+
+                const per_capita_color_scale = d3.scaleLinear()
+                                            .domain([0, maxY_per_capita])
+                                            .range(["#F4ECF7", "#5B2C6F"]);
+
+                // SVG chart 2
+                const svg_per_capita = d3.select("#svg2");
+
+                svg_per_capita.selectAll("rect")
+                                .data(dataset)
+                                .enter()
+                                .append("rect")
+                                .attr("x", d => xScale(d.year))
+                                .attr("y", d => yScale_per_capita(d.per_capita_in_usd))
+                                .attr("width", xScale.bandwidth())
+                                .attr("height", d => (height - margin) - yScale_per_capita(d.per_capita_in_usd))
+                                .attr("fill", d => per_capita_color_scale(d.per_capita_in_usd));
+
+                svg_per_capita.append("g")
+                                .attr("class", "axis")
+                                .attr("id", "bot")
+                                .attr("transform", "translate(0," + (height - margin) + ")")
+                                .call(bottomAxis);
+
+                svg_per_capita.append("g")
+                                .attr("class", "axis")
+                                .attr("id", "left")
+                                .attr("transform", "translate(" + margin + ",0)")
+                                .call(leftAxis_per_capita);
+
+                svg_per_capita.append("text")
+                            .attr("x", 150)
+                            .attr("y", 150)
+                            .text("India's per capita income in USD over years")
+                            .attr("font-size", "24px")
+                            .attr("font-weight", "bold")
+                            .attr("fill", "#99A3A4");
+                
+                // chart 3 scale calibration
+                
+                //const maxY_percentage_growth = d3.max(dataset, d => d.percentage_growth);
+                //const minY_percentage_growth = d3.min(dataset, d => d.percentage_growth);
+                const maxY_percentage_growth = 10;
+                const minY_percentage_growth = -10;
+
+                const yScale_percentage_growth = d3.scaleLinear()
+                                                    .domain([minY_percentage_growth, maxY_percentage_growth])
+                                                    .range([height - margin, margin]);
+
+                const yScale_percentage_growth_plus = d3.scaleLinear()
+                                                        .domain([0, maxY_percentage_growth])
+                                                        .range([(height / 2), margin]);
+
+                const yScale_percentage_growth_minus = d3.scaleLinear()
+                                                        .domain([minY_percentage_growth, 0])
+                                                        .range([height - margin, (height / 2)]);
+
+                const leftAxis_percentage_growth = d3.axisLeft().scale(yScale_percentage_growth);
+
+                const percentage_growth_color_scale_plus = d3.scaleLinear()
+                                                            .domain([0, maxY_percentage_growth])
+                                                            .range(["#2ECC71", "#3498DB"])
+
+                const percentage_growth_color_scale_minus = d3.scaleLinear()
+                                                            .domain([minY_percentage_growth, 0])
+                                                            .range(["#FD0000", "#F1C40F"]);
+                
+
+                //SVG chart 3
+                
+                const svg_percentage_growth = d3.select("#svg3");
+
+                svg_percentage_growth.selectAll("rect")
+                                        .data(dataset)
+                                        .enter()
+                                        .append("rect")
+                                        .attr("x", d => xScale(d.year))
+                                        .attr("y", d => d.percentage_growth >= 0 ? yScale_percentage_growth_plus(d.percentage_growth) : height / 2)
+                                        .attr("width", xScale.bandwidth())
+                                        .attr("height", d => d.percentage_growth >= 0 ? ((height / 2) - yScale_percentage_growth_plus(d.percentage_growth)) : (yScale_percentage_growth_minus(d.percentage_growth) - (height / 2)))
+                                        .attr("fill", d => d.percentage_growth >=0 ? percentage_growth_color_scale_plus(d.percentage_growth) : percentage_growth_color_scale_minus(d.percentage_growth));
+                
+                svg_percentage_growth.append("g")
+                                        .attr("class", "axis")
+                                        .attr("id", "bot")
+                                        .attr("transform", "translate(0," + (height / 2) + ")")
+                                        .call(bottomAxis);
+
+                svg_percentage_growth.append("g")
+                                        .attr("class", "axis")
+                                        .attr("id", "left")
+                                        .attr("transform", "translate(" + margin + ",0)")
+                                        .call(leftAxis_percentage_growth);
+
+                svg_percentage_growth.append("text")
+                                .attr("x", 150)
+                                .attr("y", 60)
+                                .text("India's percentage growth of GDP over years")
+                                .attr("font-size", "24px")
+                                .attr("font-weight", "bold")
+                                .attr("fill", "#99A3A4");
+                
+                // Chart 4 horizontal bar chart
+                const yScale_gdp_horizontal = d3.scaleBand()
+                                                .domain(dataset.map(d => d.year))
+                                                .range([height - margin, margin])
+                                                .paddingInner(0.2)
+                                                .paddingOuter(0.2);
+
+                const leftAxis_gdp_horizontal = d3.axisLeft().scale(yScale_gdp_horizontal);
+                
+                // chart 4 scale calibration
+                const maxX_gdp_horizontal = d3.max(dataset, d => d.gdp_in_billion_usd);
+
+                const xScale_gdp_horizontal = d3.scaleLinear()
+                                                .domain([0, maxX_gdp_horizontal])
+                                                .range([margin, width - margin]);
+                
+                const bottomAxis_gdp_horizontal = d3.axisBottom().scale(xScale_gdp_horizontal);
+
+                const gdp_color_scale_horizontal = d3.scaleLinear()
+                                            .domain([0, maxY_gdp])
+                                            .range(["#48C9B0", "#3498DB"]);
+
+                //SVG chart 4
+                const svg_gdp_horizontal = d3.select("#svg4");
+
+                svg_gdp_horizontal.selectAll("rect")
+                                .data(dataset)
+                                .enter()
+                                .append("rect")
+                                .attr("x", d => margin)
+                                .attr("y", d => yScale_gdp_horizontal(d.year))
+                                .attr("width", d => xScale_gdp_horizontal(d.gdp_in_billion_usd) - margin)
+                                .attr("height", yScale_gdp_horizontal.bandwidth())
+                                .attr("fill", d => gdp_color_scale_horizontal(d.gdp_in_billion_usd));
+
+                svg_gdp_horizontal.append("g")
+                                .attr("class", "axis")
+                                .attr("id", "bot")
+                                .attr("transform", "translate(0," + (height - margin) + ")")
+                                .call(bottomAxis_gdp_horizontal);
+                
+                svg_gdp_horizontal.append("g")
+                                .attr("class", "axis")
+                                .attr("id", "left")
+                                .attr("transform", "translate(" + margin + ",0)")
+                                .call(leftAxis_gdp_horizontal);
+
+                svg_gdp_horizontal.append("text")
+                            .attr("x", 150)
+                            .attr("y", 150)
+                            .text("India's GDP in billion USD over years")
+                            .attr("font-size", "24px")
+                            .attr("font-weight", "bold")
+                            .attr("fill", "#99A3A4");
+                
+                console.log(dataset);
+
+            });
+
+        </script>
+    </body>
+</html>
