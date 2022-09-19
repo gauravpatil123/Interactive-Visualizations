@@ -16,10 +16,10 @@ This directory contains a foundational script for creating bar charts using d3 i
 **Datasets**</br>
 I used the [GDP Growth of India](https://www.kaggle.com/datasets/imbikramsaha/indian-gdp) dataset which I found on Kaggle. It is a open source and relatively simple and clean dataset, which can be directly used to create charts without any data cleaning.
 
-I have also uploaded the same dataset in this directory and you can find it in the [data/GDP Growth of India]("data/GDP Growth of India/") directory.
+I have also uploaded the same dataset in this directory and you can find it in the [data/GDP Growth of India](https://github.com/gauravpatil123/Interactive-Visualizations/tree/main/D3%20Foundations%20Pt%202/data/GDP%20Growth%20of%20India) directory.
 
 **Scripts**</br>
-- India_GDP_Bar_Chart.html
+- India_GDP_Bar_Chart.html</br>
 Runiing this script on a server will create all the charts.
 
 **Outputs**</br>
