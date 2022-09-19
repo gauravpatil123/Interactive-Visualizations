@@ -20,7 +20,7 @@ I have also uploaded the same dataset in this directory and you can find it in t
 
 **Scripts**</br>
 - India_GDP_Bar_Chart.html</br>
-Runiing this script on a server will create all the charts.
+Running this script on a server will create all the charts.
 
 **Outputs**</br>
 - Chart 1 | India's GDP in billion USD over years
