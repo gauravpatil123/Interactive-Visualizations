@@ -29,10 +29,10 @@ Running this script will draw the shapes of playstation comtroller buttons - thi
 
 **Outputs**</br>
 - Drawing 1 | World Disaster Risk Dataset Infograph
-<img src="data/Images/Drawing_SVG_Path.png" width=3000 height=1500>
+<img src="data/Images/Drawing_SVG_Path.png" width=1000 height=500>
 
 - Drawing 2 | Infograph Legend
-<img src="data/Images/legend.png" width=100 height=100>
+<img src="data/Images/legend.png" width=675 height=500>
 
 - Drawing 3 | Playstation Controller Buttons
-<img src="data/Images/ps_shapes.png" width=1000 height=1000>
+<img src="data/Images/ps_shapes.png" width=500 height=500>
