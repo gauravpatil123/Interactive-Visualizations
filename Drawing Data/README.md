@@ -15,7 +15,7 @@ This directory contains script for drawing fundamental shapes using svg path, a 
 **Datasets**</br>
 I used the [World Disaster Risk Dataset](https://www.kaggle.com/datasets/tr1gg3rtrash/global-disaster-risk-index-time-series-dataset) dataset which I found on Kaggle. It is a open source and relatively simple and clean dataset, which can be directly used without any data cleaning.
 
-I have also uploaded the same dataset in this directory and you can find it in the [data/World Risk Index]() directory.
+I have also uploaded the same dataset in this directory and you can find it in the [data/World Risk Index](https://github.com/gauravpatil123/Interactive-Visualizations/blob/main/Drawing%20Data/data/World%20Risk%20Index/world_risk_index.csv) directory.
 
 **Scripts**</br>
 - World_Risk_Index_Inforgraph.html</br>
