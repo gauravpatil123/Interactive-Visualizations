@@ -19,10 +19,15 @@ I have also uploaded the same dataset in this directory and you can find it in t
 
 **Scripts**</br>
 - World_Risk_Index_Inforgraph.html</br>
-Running this script on a server will create the visual infograph which is based on the dataset mentioned above. I have used several datapoints from the dataset including exposure, vulnerability, suceptibility, wri score, lack of coping capability, exposure category and wri category to reflect on the infograph. The legend on hoe to read the infograph is seperately posted below.
+Running this script on a server will create the visual infograph which is based
+on the dataset mentioned above. I have used several metrics from the dataset
+including exposure, vulnerability, suceptibility, wri score, lack of coping
+capability, exposure category and wri category to reflect on the infograph. The
+legend on how to read the infograph is seperately posted below.
 
 - Legend.html</br>
-Running this script on a server wil create the legend to read the infograph mentioed above. (You might need to zoom in your browser to see the enlarged legend - the absolute dimentions of the legend are small).
+Running this script on a server will create the legend to read the infograph
+mentioned above. (You might need to zoom in your browser to see the enlarged legend - the absolute dimentions of the legend are small).
 
 - Drawing_SVG_Path.html</br>
 Running this script will draw the shapes of playstation comtroller buttons - this was just to practice drawing using svg path.
