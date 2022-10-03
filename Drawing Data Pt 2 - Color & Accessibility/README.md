@@ -6,8 +6,8 @@
 - Scripts
 - Accessibility & Color Changes
 - Outputs
-  1. Drawing 1
-  2. Drawing 2
+  1. Drawing 1 | World Disaster Risk Dataset Infograph
+  2. Drawing 2 | Infograph Legend
   
 **About**</br>
 This directory contains a script for creating a color accessible data inforgraph for the world disaster risk dataset (from kaggle) and a script for creating a legend for the data infograph.
