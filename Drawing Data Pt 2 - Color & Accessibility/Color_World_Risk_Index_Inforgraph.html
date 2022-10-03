@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Drawing Data - World Risk Index</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style>
+            .title {
+            font-size: 37px;
+            font-weight: bold;
+            font-family: sans-serif;
+            }
+
+            .labels{
+                font-size: 11px;
+                font-weight: normal;
+                font-family: serif;
+            }
+        </style>
+    </head>
+    <body>
+        <svg width="4000" height="4000"></svg>
+        <script type="text/javascript">
+
+            // shape
+            //left triangle
+            const left_triangle_path = ["M25,25 L50,50 L25,75 Z"];
+
+            // top triangle
+            const top_triangle_path = ["M25,25 L75,25 L50,50 Z"];
+
+            //right triangle
+            const right_triangle_path = ["M75,25 L50,50 L75,75 Z"];
+
+            // bottom left triangle
+            const bot_left_triangle_path = ["M25,75 L50,75 L50,50 Z"];
+
+            // bottom right triangle
+            const bot_right_triangle_path = ["M75,75 L50,75 L50,50 Z"];
+
+            // bottom triangle
+            const bot_triangle_path = ["M50,50 L75,75 L25,75 Z"];
+
+            // cross left
+            const cross_left_path = ["M25,75 L75,25"];
+
+            //cross right
+            const cross_right_path = ["M25,25 L75,75"];
+
+            //loading data
+            d3.csv("data/World Risk Index/world_risk_index.csv").then(dataset => {
+                dataset.forEach(d => {
+                    d.region = d["Region"];
+                    d.wri = +d.WRI;
+                    d.exposure = +d.Exposure;
+                    d.vulnerability = +d.Vulnerability;
+                    d.susceptibility = +d.Susceptibility;
+                    d.locc = +d["Lack of Coping Capabilities"];
+                    d.loac = +d["Lack of Adaptive Capacities"];
+                    d.year = +d.Year;
+                    d.exposure_category = d["Exposure Category"];
+                    d.wri_category = d["WRI Category"];
+                });
+
+                // global variables
+                const data_year_2021 = dataset.filter(d => d.year == 2021);
+                data_year_2021.pop();
+                
+                const per_row = 30;
+                const size = 100;
+                const sizeY = 250;
+
+                const wri_categories = ["Very High", "High", "Medium", "Low", "Very Low"];
+
+                //categories and scales
+                function category_band(category){
+                    
+                    var out_band;
+                    if (category == "Very High") {
+                        out_band = "#e66101";  
+                    };
+                    if (category == "High") {
+                        out_band = "#fdb863";
+                    };
+                    if (category == "Medium") {
+                        out_band = "#FFDCB4";
+                    };
+                    if (category == "Low") {
+                        out_band = "#b2abd2";
+                    };
+                    if (category == "Very Low") {
+                        out_band = "#5e3c99";
+                    };
+                    //console.log(out_band);
+                    return out_band;
+                };
+
+                const minExposure = d3.min(data_year_2021, d=>d.exposure);
+                const maxExposure = d3.max(data_year_2021, d=>d.exposure);
+                const exposure_scale = d3.scaleLinear()
+                                        .domain([minExposure, maxExposure])
+                                        .range(["#0571b0", "#ca0020"]);
+
+                const minVulnerability = d3.min(data_year_2021, d=>d.vulnerability);
+                const maxVulnerability = d3.max(data_year_2021, d=>d.vulnerability);
+                const vulnerability_scale = d3.scaleLinear()
+                                            .domain([minVulnerability, maxVulnerability])
+                                            .range(["#0571b0", "#ca0020"]);
+
+                const minSusceptibility = d3.min(data_year_2021, d=>d.susceptibility);
+                const maxSusceptibility = d3.max(data_year_2021, d=>d.susceptibility);
+                const susceptibility_scale = d3.scaleLinear()
+                                                .domain([minSusceptibility, maxSusceptibility])
+                                                .range(["#0571b0", "#ca0020"]);
+
+                const minlocc = d3.min(data_year_2021, d=>d.locc);
+                const maxlocc = d3.max(data_year_2021, d=>d.locc);
+                const locc_scale = d3.scaleLinear()
+                                    .domain([minlocc, maxlocc])
+                                    .range(["#0571b0", "#ca0020"]);
+
+                const min_wri = d3.min(data_year_2021, d=>d.wri);
+                const max_wri = d3.max(data_year_2021, d=>d.wri);
+                const wri_scale = d3.scaleLinear()
+                                    .domain([min_wri, max_wri])
+                                    .range([0,150]);
+                
+                function wri_path_string(x,y,scale,wri){
+                    const y2 = y - scale(wri) - 50;
+                    var out_path = "M" + x + "," + y + " ";
+                    out_path += "L" + x + "," + y2;
+                    out_path = [out_path];
+                    return out_path;
+                }
+
+                const wri_stem_scale = d3.scaleQuantize()
+                                        .domain([min_wri, max_wri])
+                                        .range(["#7F8C8D", "#1F4461", "#A32805"]);
+
+                const svg_data_drawing = d3.select("svg");
+
+                //data groups
+                const g = svg_data_drawing.selectAll("g")
+                                            .data(data_year_2021)
+                                            .enter()
+                                            .append("g")
+                                            .attr("transform", (d,i) => {
+                                                const x_row = (i % per_row + 1) * size;
+                                                const y_row = (Math.floor(i/per_row)+.55) * sizeY;
+                                                console.log([x_row,y_row]);
+                                                return "translate(" + [x_row,y_row] + ")";
+                                            });
+
+                const left_triangle = g.append("path")
+                                        .attr("d", left_triangle_path)
+                                        .attr("stroke-width", 0)
+                                        .attr("stroke", "pink")
+                                        .attr("fill", d => exposure_scale(d.exposure))
+                                        .attr("transform", d=>{
+                                        const h = wri_scale(d.wri) * (-1);
+                                        return "translate(0," + h + ")";
+                                        });
+
+                const top_triangle = g.append("path")
+                                        .attr("d", top_triangle_path)
+                                        .attr("stroke-width", 0)
+                                        .attr("stroke", "pink")
+                                        .attr("fill", d => vulnerability_scale(d.vulnerability))
+                                        .attr("transform", d=>{
+                                        const h = wri_scale(d.wri) * (-1);
+                                        return "translate(0," + h + ")";
+                                        });
+                
+                const right_triangle = g.append("path")
+                                        .attr("d", right_triangle_path)
+                                        .attr("stroke-width", 0)
+                                        .attr("stroke", "pink")
+                                        .attr("fill", d => susceptibility_scale(d.susceptibility))
+                                        .attr("transform", d=>{
+                                        const h = wri_scale(d.wri) * (-1);
+                                        return "translate(0," + h + ")";
+                                        });
+                
+                const bot_triangle = g.append("path")
+                                            .attr("d", bot_triangle_path)
+                                            .attr("stroke-width", 0)
+                                            .attr("stroke", "pink")
+                                            .attr("fill", d => locc_scale(d.locc))
+                                            .attr("transform", d=>{
+                                            const h = wri_scale(d.wri) * (-1);
+                                            return "translate(0," + h + ")";
+                                            });
+
+                const wri_stem = g.append("path")
+                                    .attr("d", (d,i) => {
+                                        const row_x = size / 2;
+                                        const row_y = size;
+                                        const out = wri_path_string(row_x, row_y, wri_scale, d.wri);
+                                        return out;
+                                    })
+                                    .attr("stroke-width", 3)
+                                    .attr("stroke", d => wri_stem_scale(d.wri));
+
+                const cross_left = g.append("path")
+                                    .attr("d", cross_left_path)
+                                    .attr("stroke-width", 5)
+                                    .attr("stroke", d => {return category_band(d.exposure_category)})
+                                    .attr("transform", d=>{
+                                        const h = (wri_scale(d.wri) * (-1));
+                                        return "translate(0," + h + ")";
+                                    });
+
+                const cross_right = g.append("path")
+                                    .attr("d", cross_right_path)
+                                    .attr("stroke-width", 5)
+                                    .attr("stroke", d => {return category_band(d.wri_category)})
+                                    .attr("transform", d=>{
+                                        const h = wri_scale(d.wri) * (-1);
+                                        return "translate(0," + h + ")";
+                                    });
+                
+                const labels = g.append("text")
+                                .attr("x", size/2)
+                                .attr("y", size + 6)
+                                .attr("text-anchor", "middle")
+                                .attr("class", "labels")
+                                .text(d => d.region);
+                
+                const title = svg_data_drawing.append("text")
+                                            .attr("x", 1600)
+                                            .attr("y", 50)
+                                            .attr("text-anchor", "middle")
+                                            .attr("fill", "#1F4461")
+                                            .attr("class", "title")
+                                            .text("World Risk Index Infograph for Year 2021");
+
+                console.log(dataset);
+                console.log(data_year_2021);
+            });
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>World Rish Index Infograph Legend</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style>
+            .filled_left {
+                fill: url(#mainGradient_left);
+            }
+
+            .filled_top {
+                fill: url(#mainGradient_top);
+            }
+
+            .filled_right {
+                fill: url(#mainGradient_right);
+            }
+
+            .filled_bot {
+                fill: url(#mainGradient_bot);
+            }
+
+            .stop-bot-left {
+                stop-color: #0571b0;
+            }
+
+            .stop-top-left {
+                stop-color: #ca0020;
+            }
+
+            .stop-bot-top {
+                stop-color: #0571b0;
+            }
+
+            .stop-top-top {
+                stop-color: #ca0020;
+            }
+
+            .stop-bot-right {
+                stop-color: #0571b0;
+            }
+
+            .stop-top-right {
+                stop-color: #ca0020;
+            }
+
+            .stop-bot-bot {
+                stop-color: #0571b0;
+            }
+
+            .stop-top-bot {
+                stop-color: #ca0020;
+            }
+
+            .labels-rect{
+            font-size: 3px;
+            font-weight: normal;
+            font-family: serif;
+          }
+
+          .labels-title{
+            font-size: 10px;
+            font-weight: normal;
+            font-family: serif;
+          }
+        </style>
+    </head>
+    <body>
+        <svg width="150" height="150"></svg>
+        <script type="text/javascript">
+
+            // shape
+            //left triangle
+            const left_triangle_path = ["M25,25 L50,50 L25,75 Z"];
+
+            // top triangle
+            const top_triangle_path = ["M25,25 L75,25 L50,50 Z"];
+
+            //right triangle
+            const right_triangle_path = ["M75,25 L50,50 L75,75 Z"];
+
+            // bottom left triangle
+            const bot_left_triangle_path = ["M25,75 L50,75 L50,50 Z"];
+
+            // bottom right triangle
+            const bot_right_triangle_path = ["M75,75 L50,75 L50,50 Z"];
+
+            // bottom triangle
+            const bot_triangle_path = ["M50,50 L75,75 L25,75 Z"];
+
+            // cross left
+            const cross_left_path = ["M25,75 L75,25"];
+
+            //cross right
+            const cross_right_path = ["M25,25 L75,75"];
+
+            //stem
+            const stem_path = ["M50,50 L50,100"];
+
+            //legend - shapes
+            const svg_legend = d3.select("svg");
+
+            const left_triangle = svg_legend.append("path")
+                                        .attr("d", left_triangle_path)
+                                        .attr("stroke-width", 0)
+                                        .attr("stroke", "pink")
+                                        .attr("fill", "#ca0020");
+            
+            var svgDefs = svg_legend.append('defs');
+
+            var mainGradient_left = svgDefs.append('linearGradient')
+                                        .attr("id", "mainGradient_left");
+            
+            mainGradient_left.append('stop')
+                        .attr("class", "stop-bot-left")
+                        .attr('offset', '0');
+
+            mainGradient_left.append("stop")
+                        .attr('class', 'stop-top-left')
+                        .attr('offset', '1');
+
+            const left_rect = svg_legend.append("rect")
+                                        .classed("filled_left", true)
+                                        .attr("x", 2.5)
+                                        .attr("y", 47.5)
+                                        .attr("width", 20)
+                                        .attr("height", 5);
+            
+            const top_triangle = svg_legend.append("path")
+                                            .attr("d", top_triangle_path)
+                                            .attr("stroke-width", 0)
+                                            .attr("stroke", "pink")
+                                            .attr("fill", "#0571b0");
+
+            var mainGradient_top = svgDefs.append('linearGradient')
+                                        .attr("id", "mainGradient_top");
+            
+            mainGradient_top.append('stop')
+                        .attr("class", "stop-bot-top")
+                        .attr('offset', '0');
+
+            mainGradient_top.append("stop")
+                        .attr('class', 'stop-top-top')
+                        .attr('offset', '1');
+            
+            const top_rect = svg_legend.append("rect")
+                                        .classed("filled_top", true)
+                                        .attr("x", 40)
+                                        .attr("y", 17.5)
+                                        .attr("width", 20)
+                                        .attr("height", 5); 
+            
+            const right_triangle = svg_legend.append("path")
+                                            .attr("d", right_triangle_path)
+                                            .attr("stroke-width", 0)
+                                            .attr("stroke", "pink")
+                                            .attr("fill", "#ca0020");
+            
+            var mainGradient_right = svgDefs.append('linearGradient')
+                                        .attr("id", "mainGradient_right");
+            
+            mainGradient_right.append('stop')
+                        .attr("class", "stop-bot-right")
+                        .attr('offset', '0');
+
+            mainGradient_right.append("stop")
+                        .attr('class', 'stop-top-right')
+                        .attr('offset', '1');
+            
+            const right_rect = svg_legend.append("rect")
+                                            .classed("filled_right", true)
+                                            .attr("x", 77.5)
+                                            .attr("y", 47.5)
+                                            .attr("width", 20)
+                                            .attr("height", 5);
+            
+            const bot_triangle = svg_legend.append("path")
+                                            .attr("d", bot_triangle_path)
+                                            .attr("stroke-width", 0)
+                                            .attr("stroke", "pink")
+                                            .attr("fill", "#0571b0");
+            
+            var mainGradient_bot = svgDefs.append('linearGradient')
+                                        .attr("id", "mainGradient_bot");
+            
+            mainGradient_bot.append('stop')
+                        .attr("class", "stop-bot-bot")
+                        .attr('offset', '0');
+
+            mainGradient_bot.append("stop")
+                        .attr('class', 'stop-top-bot')
+                        .attr('offset', '1');
+
+            const bot_rect = svg_legend.append("rect")
+                                        .classed("filled_bot", true)
+                                        .attr("x", 25)
+                                        .attr("y", 80)
+                                        .attr("width", 20)
+                                        .attr("height", 5);
+
+            const stem = svg_legend.append("path")
+                                    .attr("d", stem_path)
+                                    .attr("stroke-width", 3)
+                                    .attr("stroke", "#A32805");
+
+            const cross_left = svg_legend.append("path")
+                                    .attr("d", cross_left_path)
+                                    .attr("stroke-width", 5)
+                                    .attr("stroke", "#e66101");
+            
+            const cross_right = svg_legend.append("path")
+                                        .attr("d", cross_right_path)
+                                        .attr("stroke-width", 5)
+                                        .attr("stroke", "#5e3c99");
+            
+            const band_rect_1 = svg_legend.append("rect")
+                                        .attr("x", 113.5)
+                                        .attr("y", 27.5)
+                                        .attr("width", 5)
+                                        .attr("height", 5)
+                                        .attr("fill", "#e66101");
+            
+            const band_rect_2 = svg_legend.append("rect")
+                                        .attr("x", 113.5)
+                                        .attr("y", 37.5)
+                                        .attr("width", 5)
+                                        .attr("height", 5)
+                                        .attr("fill", "#fdb863");
+            
+            const band_rect_3 = svg_legend.append("rect")
+                                        .attr("x", 113.5)
+                                        .attr("y", 47.5)
+                                        .attr("width", 5)
+                                        .attr("height", 5)
+                                        .attr("fill", "#FFDCB4");
+            
+            const band_rect_4 = svg_legend.append("rect")
+                                        .attr("x", 113.5)
+                                        .attr("y", 57.5)
+                                        .attr("width", 5)
+                                        .attr("height", 5)
+                                        .attr("fill", "#b2abd2");
+
+            const band_rect_5 = svg_legend.append("rect")
+                                        .attr("x", 113.5)
+                                        .attr("y", 67.5)
+                                        .attr("width", 5)
+                                        .attr("height", 5)
+                                        .attr("fill", "#5e3c99");
+
+            const stem_rect_1 = svg_legend.append("rect")
+                                        .attr("x", 67.5)
+                                        .attr("y", 87.5)
+                                        .attr("width", 5)
+                                        .attr("height", 5)
+                                        .attr("fill", "#7F8C8D");
+
+            const stem_rect_2 = svg_legend.append("rect")
+                                        .attr("x", 77.5)
+                                        .attr("y", 87.5)
+                                        .attr("width", 5)
+                                        .attr("height", 5)
+                                        .attr("fill", "#1F4461");
+            
+            const stem_rect_3 = svg_legend.append("rect")
+                                        .attr("x", 87.5)
+                                        .attr("y", 87.5)
+                                        .attr("width", 5)
+                                        .attr("height", 5)
+                                        .attr("fill", "#A32805");
+
+            // label arrows
+            const top_band_arrow_path = ["M75,25 L110,25 M108,24 L110,25 M108,26 L110,25"];
+            const bot_band_arrow_path = ["M75,75 L110,75 M108,74 L110,75 M108,76 L110,75"];
+            const bracket_path = ["M116,22 L111,22 M111,22 L111,78 M111,78 L116,78"];
+
+            const stem_arrow_path = ["M50,80 L80,80 M80,80 L80,85 M79,83 L80,85 M81,83 L80,85"];
+            const stem_bracket_path = ["M62,90 L62,85 M62,85 L98,85 M98,85 L98,90"];
+
+            const top_band_arrow = svg_legend.append("path")
+                                            .attr("d", top_band_arrow_path)
+                                            .attr("stroke", "black")
+                                            .attr("stroke-width", 0.25);
+
+            const bot_band_arrow = svg_legend.append("path")
+                                            .attr("d", bot_band_arrow_path)
+                                            .attr("stroke", "black")
+                                            .attr("stroke-width", 0.25);
+
+            const bracket = svg_legend.append("path")
+                                        .attr("d", bracket_path)
+                                        .attr("stroke", "black")
+                                        .attr("stroke-width", 0.25);
+            
+            const stem_arrow = svg_legend.append("path")
+                                        .attr("d", stem_arrow_path)
+                                        .attr("stroke", "black")
+                                        .attr("stroke-width", 0.25);
+            
+            const stem_bracket = svg_legend.append("path")
+                                        .attr("d", stem_bracket_path)
+                                        .attr("stroke", "black")
+                                        .attr("stroke-width", 0.25);
+            
+            // labels
+            const exposure_l1 = svg_legend.append("text")
+                                            .attr("x", 2.5)
+                                            .attr("y", 53)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("min");
+            
+            const exposure_l2 = svg_legend.append("text")
+                                            .attr("x", 22.5)
+                                            .attr("y", 53)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("max")
+
+            const exposure_l3 = svg_legend.append("text")
+                                            .attr("x", 12.5)
+                                            .attr("y", 45)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("exposure")
+            
+            const vulnerability_l1 = svg_legend.append("text")
+                                            .attr("x", 40)
+                                            .attr("y", 22.5)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("min");
+            
+            const vulnerability_l2 = svg_legend.append("text")
+                                            .attr("x", 60)
+                                            .attr("y", 22.5)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("max")
+
+            const vulnerability_l3 = svg_legend.append("text")
+                                            .attr("x", 50)
+                                            .attr("y", 15)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("vulnerability");
+
+            const susceptibility_l1 = svg_legend.append("text")
+                                            .attr("x", 77.5)
+                                            .attr("y", 53)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("min");
+            
+            const susceptibility_l2 = svg_legend.append("text")
+                                            .attr("x", 97.5)
+                                            .attr("y", 53)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("max")
+
+            const susceptibility_l3 = svg_legend.append("text")
+                                            .attr("x", 87.5)
+                                            .attr("y", 45)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("susceptibility");
+
+            const locc_l1 = svg_legend.append("text")
+                                            .attr("x", 25)
+                                            .attr("y", 85)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("min");
+            
+            const locc_l2 = svg_legend.append("text")
+                                            .attr("x", 45)
+                                            .attr("y", 85)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("max")
+
+            const locc_l3 = svg_legend.append("text")
+                                            .attr("x", 33)
+                                            .attr("y", 77)
+                                            .attr("dx", "0px")
+                                            .attr("dy", "2px")
+                                            .attr("text-anchor", "middle")
+                                            .attr("class", "labels-rect")
+                                            .text("lack of coping capability");
+
+            const exposure_category_label = svg_legend.append("text")
+                                                        .attr("x", 82)
+                                                        .attr("y", 23)
+                                                        .attr("text-anchor", "start")
+                                                        .attr("class", "labels-rect")
+                                                        .text("Exposure category");
+            
+            const wri_category_label = svg_legend.append("text")
+                                                        .attr("x", 82)
+                                                        .attr("y", 73)
+                                                        .attr("text-anchor", "start")
+                                                        .attr("class", "labels-rect")
+                                                        .text("WRI category")
+
+            const band_label_1 = svg_legend.append("text")
+                                            .attr("x", 120)
+                                            .attr("y", 30)
+                                            .attr("dy", "1px")
+                                            .attr("text-anchor", "start")
+                                            .attr("class", "labels-rect")
+                                            .text("Very High");
+
+            const band_label_2 = svg_legend.append("text")
+                                            .attr("x", 120)
+                                            .attr("y", 40)
+                                            .attr("dy", "1px")
+                                            .attr("text-anchor", "start")
+                                            .attr("class", "labels-rect")
+                                            .text("High");
+
+            const band_label_3 = svg_legend.append("text")
+                                            .attr("x", 120)
+                                            .attr("y", 50)
+                                            .attr("dy", "1px")
+                                            .attr("text-anchor", "start")
+                                            .attr("class", "labels-rect")
+                                            .text("Medium");
+
+            const band_label_4 = svg_legend.append("text")
+                                            .attr("x", 120)
+                                            .attr("y", 60)
+                                            .attr("dy", "1px")
+                                            .attr("text-anchor", "start")
+                                            .attr("class", "labels-rect")
+                                            .text("Low");
+
+            const band_label_5 = svg_legend.append("text")
+                                            .attr("x", 120)
+                                            .attr("y", 70)
+                                            .attr("dy", "1px")
+                                            .attr("text-anchor", "start")
+                                            .attr("class", "labels-rect")
+                                            .text("Very Low");
+
+            const stem_band_label_1 = svg_legend.append("text")
+                                                .attr("x", 62)
+                                                .attr("y", 91)
+                                                .attr("dy", "2px")
+                                                .attr("text-anchor", "middle")
+                                                .attr("class", "labels-rect")
+                                                .text("min");
+            
+            const stem_band_label_2 = svg_legend.append("text")
+                                                .attr("x", 98)
+                                                .attr("y", 91)
+                                                .attr("dy", "2px")
+                                                .attr("text-anchor", "middle")
+                                                .attr("class", "labels-rect")
+                                                .text("max");
+            
+            const stem_band_label_3 = svg_legend.append("text")
+                                                .attr("x", 62)
+                                                .attr("y", 91)
+                                                .attr("dx", "2px")
+                                                .attr("dy", "5px")
+                                                .attr("text-anchor", "start")
+                                                .attr("class", "labels-rect")
+                                                .text("Quantized WRI Categories");
+            
+            const stem_band_label_4 = svg_legend.append("text")
+                                                .attr("x", 50)
+                                                .attr("y", 75)
+                                                .attr("dx", "5px")
+                                                .attr("dy", "4px")
+                                                .attr("text-anchor", "start")
+                                                .attr("class", "labels-rect")
+                                                .text("height of stem = scaled WRI value");
+
+            const legend_title_label = svg_legend.append("text")
+                                                .attr("x", 50)
+                                                .attr("y", 10)
+                                                .attr("text-anchor", "middle")
+                                                .attr("class", "labels-title")
+                                                .text("Legend");
+
+
+        </script>
+    </body>
+</html>
