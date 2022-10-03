@@ -5,4 +5,4 @@
 1. D3 Foundations
 2. D3 Foundations Pt 2
 3. Drawing Data
-4. Drawing data Pt 2 - Color & Accessibility
+4. Drawing Data Pt 2 - Color & Accessibility
