@@ -18,7 +18,7 @@ I used the [World Disaster Risk Dataset](https://www.kaggle.com/datasets/tr1gg3r
 I have also uploaded the same dataset in this directory and you can find it in the [data/World Risk Index](https://github.com/gauravpatil123/Interactive-Visualizations/blob/main/Drawing%20Data/data/World%20Risk%20Index/world_risk_index.csv) directory.
 
 **Scripts**</br>
-- World_Risk_Index_Inforgraph.html</br>
+- Color_World_Risk_Index_Inforgraph.html</br>
 Running this script on a server will create the visual infograph which is based
 on the dataset mentioned above. I have used several metrics from the dataset
 including exposure, vulnerability, suceptibility, wri score, lack of coping
@@ -34,9 +34,9 @@ mentioned above. (You might need to zoom in your browser to see the enlarged leg
   2. Changed the gradient scale from monochromatic to dichromatic.
   3. Made the gradient color scale - colorblind safe. - (using COLORBREWER 2.0 & Adobe Color)
   4. Updated the category scale of metrics [Exposure category & WRI category] from *rainbow* to a colorblind safe scale.
-    - <img src="data/Images/category_scales.png" width=1000>
+    <img src="data/Images/category_scales.png" width=1000>
   5. Updated the Quantized WRI category scale to have more neutral colors which are colorblind safe.
-    - <img src="data/Images/wri_stem_category_scale.png" width=500>
+    <img src="data/Images/wri_stem_category_scale.png" width=500>
   6. Used seperate color scales for the categorized metrics (Exposure category & WRI category) & liniearly scaled metrics (exposure, vulnerability, suceptibility, lack of coping capability) to avoid color conflicts and to make these scales colorblind safe.
 
 **Outputs**</br>
