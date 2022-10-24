@@ -1,4 +1,4 @@
-# Drawing Data Pt 2: Color & Accessibility
+# Interactivity
 
 **Contents**
 - About
