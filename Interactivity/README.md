@@ -34,6 +34,7 @@ Running this script on a server will create a interactive bar chart for the top 
 
 - Interactivity Feature #2 | Year Slider</br>
 Since there are almost 270 years on the slider which will generate 270 different charts - I have just added images of charts with ceratin intervals.</br>
+Notice that the scale of the Y-axis is also changing.</br>
 <img src="data/Images/1750.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/Images/1775.png" width=400></br>
 <img src="data/Images/1800.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/Images/1825.png" width=400></br>
 <img src="data/Images/1850.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/Images/1875.png" width=400></br>
