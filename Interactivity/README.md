@@ -6,9 +6,9 @@
 - Script
 - Interactivity Features
 - Outputs
-  1. Drawing 1 | World Disaster Risk Dataset Infograph
-  2. Drawing 2 | Infograph Legend
-  
+  1. Interactivity Feature #1 | Hover & Tooltip
+  2. Interactivity Feature #2 | Year Slider (*The arrangement of images may lose its structure on smaller screen sizes*)
+
 **About**</br>
 This directory contains a script for creating an interactive bar chart for the top 10 countries for CO2 emissions for the selected year on the slider. 
 
