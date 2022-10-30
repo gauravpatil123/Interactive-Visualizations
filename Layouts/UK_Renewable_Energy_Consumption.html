@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>UK Renewable Energy Consumption</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+            svg{
+                width:2000px;
+                height:2000px;
+                margin-left: auto; 
+                margin-right: auto;
+                display: block;
+            }
+
+            .arc:hover{
+                fill: black; /*#1849A3, #6B99ED */
+            }
+
+            .yearLabels{
+
+                font-size: 15px;
+                font-weight: bold;
+                fill: #1F4461;
+
+            }
+
+            .legendLabels{
+
+                font-size: 19px;
+                font-weight: bold;
+                fill: black;
+
+            }
+        </style>
+    </head>
+    <body>
+        <svg id="svg1"></svg>
+        <svg id="svg2"></svg>
+        <script type="text/javascript">
+
+            d3.csv("data/UK Renewable Energy Consumption Dataset/uk_renewable_energy.csv").then(dataset => {
+                dataset.forEach(d => {
+                    d.year = +d["Year"];
+                    d.energy_renewable_and_waste_sources = +d["Energy from renewable & waste sources"];
+                    d.total_energy_consumption_primary_fuels_and_equivalents = +d["Total energy consumption of primary fuels and equivalents"];
+                    d.hydro = +d["Hydroelectric power"];//
+                    d.wind_wave_tidal = +d["Wind, wave, tidal"];//
+                    d.solar_pv = +d["Solar photovoltaic"];
+                    d.geothermal_aquifers = +d["Geothermal aquifers"];//
+                    d.conventional_renewables = d.hydro + d.wind_wave_tidal + d.geothermal_aquifers;
+                    d.landfill_gas = +d["Landfill gas"];//
+                    d.sewage_gas = +d["Sewage gas"];//
+                    d.biogas_autogen = +d["Biogas from autogen"];//
+                    d.municipal_solid_waste = +d["Municipal solid waste (MSW)"];//
+                    d.poultry_litter = +d["Poultry litter"];//
+                    d.straw = +d["Straw"];//
+                    d.wood = +d["Wood"];//
+                    d.charcoal = +d["Charcoal"];//
+                    d.liquid_bio_fuels = +d["Liquid bio-fuels"];//
+                    d.bioethanol = +d["Bioethanol"];//
+                    d.biodiesel = +d["Biodiesel"];//
+                    d.biomass = +d["Biomass"]; //
+                    d.wood_and_charcoal = d.wood + d.charcoal;
+                    d.cross_boundary_adjustment = +d["Cross-boundary Adjustment"]; // not considering
+                    d.wastegases_biogases_solidwaste = d.landfill_gas + d.sewage_gas + d.biogas_autogen + d.municipal_solid_waste + d.poultry_litter + d.straw + d.biomass;
+                    d.biofuels = d.liquid_bio_fuels + d.bioethanol + d.biodiesel;                  
+                });
+
+                console.log(dataset);
+
+                let energy_list = [];
+                let renewable_energy_list = [];
+                const years = [1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020];
+
+                function year_text_labels(svg, sx, sy, diff, t) {
+                    
+                    let year = t.toString();
+                    let y = sy - diff;
+
+                    svg.append("text")
+                        .attr("x", sx)
+                        .attr("y", y)
+                        .text(year)
+                        .attr("class", "yearLabels");
+
+                }
+
+                function energy_array(perData) {
+
+                    eList = [perData.energy_renewable_and_waste_sources, perData.total_energy_consumption_primary_fuels_and_equivalents];
+                    energy_list.push(eList);
+                }
+
+                function renewable_energy_array(perData) {
+
+                    reList = [perData.solar_pv + perData.conventional_renewables, perData.wood_and_charcoal, perData.wastegases_biogases_solidwaste + perData.biofuels];
+                    renewable_energy_list.push(reList);
+
+                }
+
+                dataset.forEach(d => energy_array(d));
+                //console.log(energy_list);
+
+                dataset.forEach(d => renewable_energy_array(d));
+                console.log(renewable_energy_list);
+
+                let svg_energy = d3.select("#svg1");
+                let colorScale = d3.scaleOrdinal(d3.schemeSpectral[6]);
+                let colorScale_binary = d3.scaleOrdinal(["#358CE8", "#FF813F"]); // #FA604B, #E8A735, #FF813F
+                let colorScale_2 = d3.scaleOrdinal(d3.schemeTableau10);
+                let colorScale_triad = d3.scaleOrdinal(["#15AD4F",  "#9C6B1C", "#FBC932"]); //#FBC932, #A24DE8
+                //console.log(d3.schemeTableau10[0]);
+                const base_inner_r = 100;
+                const thickness = 10;
+                let r_increment = 20;
+
+                for (let i = 0; i < energy_list.length; i++) {
+
+                    let increment = i * r_increment;
+                    inner_r = base_inner_r + increment;
+                    outer_r = inner_r + thickness;
+                    
+                    let arcs = d3.arc()
+                                .innerRadius(inner_r)
+                                .outerRadius(outer_r);
+
+                    let rings = d3.pie()
+                                .sortValues((a, b) => a - b)
+                                .padAngle(0.02)
+                                .startAngle(0.0 * Math.PI)
+                                .endAngle(1.81 * Math.PI);
+
+                    let curr_data = energy_list[i];
+                    //console.log(curr_data);
+
+                    let groups = svg_energy.selectAll("g.arc")
+                                        .data(rings(curr_data))
+                                        //.enter()
+                                        .join("g")
+                                        .attr("class", "arc")
+                                        .attr("transform", "translate(1000, 1000)");
+                    
+                    console.log(rings(curr_data));
+
+                    groups.append("path")
+                        .attr("fill", (d,i) =>colorScale_binary(i))
+                        .attr("d", arcs);
+
+                }
+
+                svg_energy.append("text")
+                        .attr("x", 350)
+                        .attr("y", 200)
+                        .text("Renewable Energy Sources V/S Primary Energy Sources in UK")
+                        .attr("font-size", "46px")
+                        .attr("font-weight", "bold")
+                        .attr("fill", "#1F4461");
+                
+                svg_energy.selectAll(".yearLabels")
+                        .data(years)
+                        .enter()
+                        .append("text")
+                        .attr("x", 965)
+                        .attr("y", (d, i) => 900 - (i * 20))
+                        .text(d => d.toString())
+                        .attr("class", "yearLabels");
+
+                const rect_eLegend_1 = svg_energy.append("rect") 
+                                                .attr("x", 650)
+                                                .attr("y", 290)
+                                                .attr("width", 25)
+                                                .attr("height", 25)
+                                                .attr("fill", "#358CE8");
+
+                const rect_eLegend_2 = svg_energy.append("rect") 
+                                                .attr("x", 650)
+                                                .attr("y", 340)
+                                                .attr("width", 25)
+                                                .attr("height", 25)
+                                                .attr("fill", "#FF813F");
+
+                svg_energy.append("text")
+                        .attr("x", 690)
+                        .attr("y", 308)
+                        .text("Renewable Energy Sources")
+                        .attr("class", "legendLabels");
+
+                svg_energy.append("text")
+                            .attr("x", 690)
+                            .attr("y", 359)
+                            .text("Primary Energy Sources")
+                            .attr("class", "legendLabels");
+
+                const vertical_line_1 = svg_energy.append("line")
+                                                    .attr("x1", 1000)
+                                                    .attr("y1", 1000)
+                                                    .attr("x2", 1000)
+                                                    .attr("y2", 280)
+                                                    .attr("stroke", "black")
+                                                    .attr("stroke-width", "1px");
+
+                const slanted_line_1 = svg_energy.append("line")
+                                                .attr("x1", 1000)
+                                                .attr("y1", 1000)
+                                                .attr("x2", 1000 - 405)
+                                                .attr("y2", 1000 - 600)
+                                                .attr("stroke", "black")
+                                                .attr("stroke-width", "1px");
+
+                let svg_renewable_energy = d3.select("#svg2");
+
+                for (let i = 0; i < renewable_energy_list.length; i++) {
+
+                    let increment = i * r_increment;
+                    inner_r = base_inner_r + increment;
+                    outer_r = inner_r + thickness;
+
+                    let arcs = d3.arc()
+                                .innerRadius(inner_r)
+                                .outerRadius(outer_r);
+
+                    let rings = d3.pie()
+                                //.sortValues((a, b) => b - a)
+                                .padAngle(0.02)
+                                .startAngle(0.0 * Math.PI)
+                                .endAngle(1.81 * Math.PI);
+                    
+                    let curr_data = renewable_energy_list[i];
+
+                    let groups = svg_renewable_energy.selectAll("g.arc")
+                                                    .data(rings(curr_data))
+                                                    .join("g")
+                                                    .attr("class", "arc")
+                                                    .attr("transform", "translate(1000, 1000)");
+
+                    console.log(rings(curr_data));
+
+                    groups.append("path")
+                            .attr("fill", (d, i) => colorScale_triad(i))
+                            .attr("d", arcs);                   
+
+                }
+
+                svg_renewable_energy.append("text")
+                        .attr("x", 450)
+                        .attr("y", 200)
+                        .text("Composition of Renewable Energy Sources in UK")
+                        .attr("font-size", "46px")
+                        .attr("font-weight", "bold")
+                        .attr("fill", "#1F4461");
+                    
+                svg_renewable_energy.selectAll(".yearLabels")
+                        .data(years)
+                        .enter()
+                        .append("text")
+                        .attr("x", 965)
+                        .attr("y", (d, i) => 900 - (i * 20))
+                        .text(d => d.toString())
+                        .attr("class", "yearLabels");
+
+                // "#15AD4F",  "#9C6B1C", "#FBC932"
+
+                const rect_reLegend_1 = svg_renewable_energy.append("rect") 
+                                                .attr("x", 650)
+                                                .attr("y", 290)
+                                                .attr("width", 25)
+                                                .attr("height", 25)
+                                                .attr("fill", "#9C6B1C");
+
+                const rect_reLegend_2 = svg_renewable_energy.append("rect") 
+                                                .attr("x", 650)
+                                                .attr("y", 340)
+                                                .attr("width", 25)
+                                                .attr("height", 25)
+                                                .attr("fill", "#FBC932");
+                
+                const rect_reLegend_3 = svg_renewable_energy.append("rect") 
+                                                .attr("x", 650)
+                                                .attr("y", 390)
+                                                .attr("width", 25)
+                                                .attr("height", 25)
+                                                .attr("fill", "#15AD4F");
+
+                svg_renewable_energy.append("text")
+                        .attr("x", 690)
+                        .attr("y", 308)
+                        .text("Wood & Charcoal")
+                        .attr("class", "legendLabels");
+
+                svg_renewable_energy.append("text")
+                            .attr("x", 690)
+                            .attr("y", 359)
+                            .text("Biofuels")
+                            .attr("class", "legendLabels");
+
+                svg_renewable_energy.append("text")
+                            .attr("x", 690)
+                            .attr("y", 410)
+                            .text("Green Energy Sources")
+                            .attr("class", "legendLabels");
+
+                const vertical_line_2 = svg_renewable_energy.append("line")
+                                                    .attr("x1", 1000)
+                                                    .attr("y1", 1000)
+                                                    .attr("x2", 1000)
+                                                    .attr("y2", 280)
+                                                    .attr("stroke", "black")
+                                                    .attr("stroke-width", "1px");
+
+                const slanted_line_2 = svg_renewable_energy.append("line")
+                                                .attr("x1", 1000)
+                                                .attr("y1", 1000)
+                                                .attr("x2", 1000 - 405)
+                                                .attr("y2", 1000 - 600)
+                                                .attr("stroke", "black")
+                                                .attr("stroke-width", "1px");
+
+            })
+
+        </script>
+    </body>
+</html>
