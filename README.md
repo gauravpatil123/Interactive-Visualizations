@@ -7,3 +7,4 @@
 3. Drawing Data
 4. Drawing Data Pt 2 - Color & Accessibility
 5. Interactivity
+6. Layouts
