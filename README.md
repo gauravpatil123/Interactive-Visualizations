@@ -8,3 +8,4 @@
 4. Drawing Data Pt 2 - Color & Accessibility
 5. Interactivity
 6. Layouts
+7. Networks & Hierarchies
