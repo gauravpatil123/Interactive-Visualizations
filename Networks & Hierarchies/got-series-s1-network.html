@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Game of Thrones Series Season 1 Network Graph</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+
+            svg{
+                width:1000px;
+                height:1000px;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <svg></svg>
+        <script type="text/javascript">
+
+            Promise.all([
+                d3.csv("data/got-series-s1-constructed/got_s1_abs_hypergraph_nodes.csv"),
+                d3.csv("data/got-series-s1-constructed/got_s1_abs_hypergraph_edges.csv"),
+            ]).then(function(files) {
+
+                const dataset = {
+                    "nodes": files[0].map(d => { return {"id": +d.Id, "size": +d.Size, "name": d.Label}}),
+                    "links": files[1].map(d => { return {"source": +d.Source, "target": +d.Target, "weight": +d.Weight}}),
+                };
+                //console.log(dataset);
+                //console.log(dataset.nodes);
+                //console.log(dataset.links);
+
+                const svg = d3.select("svg");
+                //const nodesColor = d3.scaleOrdinal(d3.schemeTableau10);
+                const nodesColor = d3.scaleOrdinal(["#E67E22","#C0392B", "#8E44AD", "#3498DB", "#16A085"]);
+
+                // function linkColor(id, target) {
+
+                //     const color1 = nodesColor(id);
+                //     const color2 = nodesColor(target);
+
+                //     console.log(color1);
+                //     console.log(color2);
+
+                //     const colorInterpolate = d3.scaleLinear()
+                //                                 .domain([1, 100])
+                //                                 .range([color1, color2]);
+
+                //     const color = colorInterpolate(50);
+                //     console.log(color);
+                //     return color;
+                    
+                // };
+
+                const simulation = d3.forceSimulation(dataset.nodes)
+                                    .force("charge", d3.forceManyBody().strength(-40))
+                                    .force("link", d3.forceLink(dataset.links).distance(500))
+                                    .force("center", d3.forceCenter().x(500).y(500));
+
+                const links = svg.selectAll("line")
+                                .data(dataset.links)
+                                .join("line")
+                                // .style("stroke", d=>{
+                                //     return linkColor(d.id, d.target)
+                                // })
+                                .style("stroke", "#5D6D7E")
+                                .style("stroke-width", d=>d.weight / 2);
+
+                const nodes = svg.selectAll("circle")
+                                .data(dataset.nodes)
+                                .join("circle")
+                                .attr("r", d=>d.size * 2)
+                                .style("fill", (d, i)=> nodesColor(i))
+                                .call(d3.drag()
+                                    .on("start", dragstarted)
+                                    .on("drag", dragged)
+                                    .on("end", dragended));
+
+                const nodeLabels = svg.selectAll("text")
+                                        .data(dataset.nodes)
+                                        .join("text")
+                                        .text(d=>d.name)
+                                        .attr("font-size", d=>d.size * 1.5);
+
+                simulation.on("tick", (event, d)=>{
+
+                    links.attr("x1", d=>d.source.x)
+                        .attr("y1", d=>d.source.y)
+                        .attr("x2", d=>d.target.x)
+                        .attr("y2", d=>d.target.y);
+
+                    nodes.attr("cx", d=>d.x)
+                        .attr("cy", d=>d.y);
+
+                    nodeLabels.attr("x", d=> (d.x - 4 * d.size))
+                                .attr("y", d=>d.y);
+                });
+
+                function dragstarted(event) {
+                    if (!event.active) simulation.alphaTarget(0.4).restart();
+                    event.subject.fx = event.subject.x;
+                    event.subject.fy = event.subject.y;
+                }
+
+                function dragged(event) {
+                    event.subject.fx = event.x;
+                    event.subject.fy = event.y;
+                }
+
+                function dragended(event) {
+                    if (!event.active) simulation.alphaTarget(0);
+                    event.subject.fx = null;
+                    event.subject.fy = null;
+                }
+
+                //console.log(dataset);
+
+
+            });
+
+        </script>
+    </body>
+</html>
