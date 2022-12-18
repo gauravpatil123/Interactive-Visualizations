@@ -9,4 +9,4 @@
 5. Interactivity
 6. Layouts
 7. Networks & Hierarchies
-8. [Transitions in US Congress](https://github.com/gauravpatil123/Interactive-Visualizations/tree/main/Transitions%20in%20US%20Congress)
+8. Transitions in US Congress
