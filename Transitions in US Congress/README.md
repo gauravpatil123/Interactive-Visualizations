@@ -46,11 +46,11 @@ This css file contails the style sheet for all the elemnent used in the visualiz
 
 **Outputs**</br>
 - Congress Through 2014 - 2020</br>
-<img src="data/Images/H1.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/Images/S1.png" width=400></br>
-<img src="data/Images/H2.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/Images/S2.png" width=400></br>
-<img src="data/Images/H3.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/Images/S3.png" width=400></br>
-<img src="data/Images/H4.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/Images/S4.png" width=400></br>
+<img src="data/images/H1.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/images/S1.png" width=400></br>
+<img src="data/images/H2.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/images/S2.png" width=400></br>
+<img src="data/images/H3.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/images/S3.png" width=400></br>
+<img src="data/images/H4.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/images/S4.png" width=400></br>
 
 - Major Events Throug 2014 - 2020</br>
-<img src="data/Images/HE1.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/Images/HE2.png" width=400></br>
-<img src="data/Images/HE3.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/Images/HE4.png" width=400></br>
+<img src="data/images/ME1.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/images/ME2.png" width=400></br>
+<img src="data/images/ME3.png" width=400> &nbsp;&nbsp;&nbsp; <img src="data/images/ME4.png" width=400></br>
