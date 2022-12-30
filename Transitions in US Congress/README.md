@@ -10,7 +10,9 @@
   2. Major Events Through 2014 - 2020
 
 **About**</br>
-This directory contains the dataset, scripts and other resorces for creating an interactive visualization representing the US Congress from the year 2014 to 2020. 
+This directory contains the dataset, scripts and other resorces for creating an interactive visualization representing the US Congress from the year 2014 to 2020.
+
+Interact with the [Visualization](https://gauravpatil123.github.io/Transitions-in-US-Congress/) yourself
 
 **Datasets**</br>
 - "Data Collection House  - Number of Seats.csv"
